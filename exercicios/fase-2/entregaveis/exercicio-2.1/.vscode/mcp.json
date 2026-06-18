@@ -1,0 +1,45 @@
+{
+  "servers": {
+    "filesystem-code": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "D:/novatech-assistant/src",
+        "D:/novatech-assistant/specs",
+        "D:/novatech-assistant/skills",
+        "D:/novatech-assistant/prompts"
+      ]
+    },
+    "filesystem-docs": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "D:/novatech-assistant/docs/novatech",
+        "D:/novatech-assistant/data/retrieval-corpus"
+      ]
+    },
+    "git": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@cyanheads/git-mcp-server"
+      ],
+      "env": {
+        "MCP_TRANSPORT_TYPE": "stdio",
+        "MCP_LOG_LEVEL": "warn",
+        "GIT_BASE_DIR": "D:/novatech-assistant",
+        "LOGS_DIR": "D:/novatech-assistant/.mcp/logs",
+        "GIT_SIGN_COMMITS": "false"
+      }
+    },
+    "memory": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ]
+    }
+  }
+}

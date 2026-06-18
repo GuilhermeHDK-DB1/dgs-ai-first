@@ -1,0 +1,50 @@
+{
+  "mcpServers": {
+    "filesystem-code": {
+      "_justificativa": "Escopo mínimo para desenvolvimento: src, specs, skills e prompts. Exclui docs/novatech, data/, infra/ e raiz — o agente não precisa editar documentação de negócio, Bicep ou arquivos de configuração de ambiente.",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "D:/novatech-assistant/src",
+        "D:/novatech-assistant/specs",
+        "D:/novatech-assistant/skills",
+        "D:/novatech-assistant/prompts"
+      ]
+    },
+    "filesystem-docs": {
+      "_justificativa": "Fontes de negócio (Confluence substituto) e corpus de chunks (Azure AI Search substituto). INTENÇÃO: read-only. LIMITAÇÃO: @modelcontextprotocol/server-filesystem v2026.1.14 não suporta flag --readonly — enforçamento via permissões NTFS (attrib +r) ou CI gate que detecta commits em docs/ e data/. Instância separada documenta o boundary de acesso.",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "D:/novatech-assistant/docs/novatech",
+        "D:/novatech-assistant/data/retrieval-corpus"
+      ]
+    },
+    "git": {
+      "_justificativa": "Acesso read ao histórico, branches e diffs do repositório local. GIT_BASE_DIR restringe operações ao novatech-assistant — o agente não consegue operar em outros repositórios da máquina. uvx não disponível no ambiente; substituído por @cyanheads/git-mcp-server via npx.",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@cyanheads/git-mcp-server"
+      ],
+      "env": {
+        "MCP_TRANSPORT_TYPE": "stdio",
+        "MCP_LOG_LEVEL": "warn",
+        "GIT_BASE_DIR": "D:/novatech-assistant",
+        "LOGS_DIR": "D:/novatech-assistant/.mcp/logs",
+        "GIT_SIGN_COMMITS": "false"
+      }
+    },
+    "memory": {
+      "_justificativa": "Grafo de conhecimento persistente para linguagem ubíqua e decisões do projeto (ADRs, glossário de domínio). Estado em memória por sessão — não escreve em pastas do repositório.",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ]
+    }
+  }
+}
+
